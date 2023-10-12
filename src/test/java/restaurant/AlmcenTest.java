@@ -18,12 +18,12 @@ import org.junit.jupiter.api.TestFactory;
 import restaurant.Almacen;
 import restaurant.Ingrediente;
 
-
 class AlmacenTest {
     Ingrediente defaultIngrediente;
-    //	static Ingrediente ingATestear[];
     static List<Ingrediente> ingATestear;
 
+    public AlmacenTest() {
+    }
     @BeforeAll
     static void InitClass() {
         ingATestear = new ArrayList<Ingrediente>();
@@ -32,8 +32,6 @@ class AlmacenTest {
         ingATestear.add(new Ingrediente("papa", "kg", 170, 500));
         ingATestear.add(new Ingrediente("huevo", "un", 150, 100));
         ingATestear.add(new Ingrediente("fideos", "kg", 10, 900));
-
-
     }
 
     @BeforeEach
@@ -57,23 +55,19 @@ class AlmacenTest {
         assertEquals(cantidadInicial + cantidadAgregada, defaultIngrediente.getStock());
     }
 
-
     @Test
     void testExtraerConsumibles() {
         fail("Not yet implemented");
     }
 
-
     @TestFactory
     Stream<DynamicTest> dynamicTestIngredientes() {
         return AlmacenTest.ingATestear.stream()
-                .map(dom -> DynamicTest.dynamicTest("Testing: " + dom, () -> {
+                .map(dom -> DynamicTest.dynamicTest("Testing: " + dom.getNombre(), () -> {
                     int cantidadInicial = dom.getStock();
                     int cantidadAgregada = (int) (Math.random() * 100);
                     Almacen.IngresarConsumibles(dom, cantidadAgregada);
                     assertEquals(cantidadAgregada + cantidadInicial, dom.getStock());
                 }));
     }
-
-
 }
