@@ -1,6 +1,7 @@
 package restaurant;
 
 import org.junit.jupiter.api.*;
+import restaurant.exceptions.RecetaVaciaException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,19 +57,24 @@ public class ProductTest {
 
         // ELAVORADOS
         Producto p3 = new ProductoElaborado("Retorti", 2500);
-        p3.setPrecioUnitarioCompra(tortilla.calcularCosto());
-        ((ProductoElaborado) p3).setReceta(tortilla);
-        ProductTest.productos.add(p3);
 
-        Producto p4 = new ProductoElaborado("BIG O", 50000);
-        p4.setPrecioUnitarioCompra(hamburguesa.calcularCosto());
-        ((ProductoElaborado) p4).setReceta(hamburguesa);
-        ProductTest.productos.add(p4);
+        try {
+            p3.setPrecioUnitarioCompra(tortilla.calcularCosto());
+            ((ProductoElaborado) p3).setReceta(tortilla);
+            ProductTest.productos.add(p3);
 
-        Producto p5 = new ProductoElaborado("PATATAS", 2000);
-        p5.setPrecioUnitarioCompra(papasFritas.calcularCosto());
-        ((ProductoElaborado) p5).setReceta(papasFritas);
-        ProductTest.productos.add(p5);
+            Producto p4 = new ProductoElaborado("BIG O", 50000);
+            p4.setPrecioUnitarioCompra(hamburguesa.calcularCosto());
+            ((ProductoElaborado) p4).setReceta(hamburguesa);
+            ProductTest.productos.add(p4);
+
+            Producto p5 = new ProductoElaborado("PATATAS", 2000);
+            p5.setPrecioUnitarioCompra(papasFritas.calcularCosto());
+            ((ProductoElaborado) p5).setReceta(papasFritas);
+            ProductTest.productos.add(p5);
+        } catch (RecetaVaciaException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -77,7 +83,7 @@ public class ProductTest {
         Producto p1 = new ProductoBasico("Lata Coca Cola", 10, 20);
         Float margenGanancia = p1.getPrecioUnitarioVenta() - p1.getPrecioUnitarioCompra();
         Float margenMinimo = p1.getPrecioUnitarioCompra() * MARGIN.floatValue();
-        assertTrue(margenGanancia >= margenMinimo);
+        assertTrue(margenGanancia > margenMinimo);
     }
 
     @Test
@@ -98,14 +104,18 @@ public class ProductTest {
         tortilla.addIngrediente(ir6);
 
         Producto p = new ProductoElaborado("Tortilla", 1500);
-        ((ProductoElaborado) p).setReceta(tortilla);
+        try {
+            ((ProductoElaborado) p).setReceta(tortilla);
+        } catch (RecetaVaciaException e) {
+            throw new RuntimeException(e);
+        }
 
         Float margenGanancia = p.getPrecioUnitarioVenta() - tortilla.calcularCosto();
         Float margenMinimo = tortilla.calcularCosto() * MARGIN.floatValue();
         p.setPrecioUnitarioCompra(tortilla.calcularCosto());
         System.out.println("prec venta: " + p.getPrecioUnitarioVenta() + " - prec costo" + tortilla.calcularCosto());
         System.out.println("prec venta: " + p.getPrecioUnitarioVenta() + " - prec costo" + p.getPrecioUnitarioCompra());
-        assertTrue(margenGanancia >= margenMinimo);
+        assertTrue(margenGanancia > margenMinimo);
     }
 
     @TestFactory

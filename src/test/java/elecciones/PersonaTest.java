@@ -1,7 +1,6 @@
 package elecciones;
 
 import org.junit.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.util.Random;
 
 public class PersonaTest {
-
     static Persona ejemplos[];
     static Persona casoActual;
     static Persona buCasoActual;

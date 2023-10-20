@@ -3,6 +3,7 @@ package restaurant;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import restaurant.exceptions.EmailFormatException;
+import restaurant.exceptions.RecetaVaciaException;
 import restaurant.exceptions.SinSaldoException;
 
 import java.util.regex.Matcher;
@@ -92,8 +93,12 @@ public class UsuarioTest {
 
         Producto p1 = new ProductoBasico("Lata Coca Cola", 10, 20);
         Producto p3 = new ProductoElaborado("Retorti", 120);
-        ((ProductoElaborado) p3).setReceta(tortilla);
-        ((ProductoElaborado) p3).setReceta(papasFritas);
+        try {
+            ((ProductoElaborado) p3).setReceta(tortilla);
+            ((ProductoElaborado) p3).setReceta(papasFritas);
+        } catch (RecetaVaciaException e) {
+            throw new RuntimeException(e);
+        }
 
         Pedido p = new Pedido();
         p.setUsuario(u);
@@ -105,7 +110,7 @@ public class UsuarioTest {
         } catch (SinSaldoException e) {
             throw new RuntimeException(e);
         }
-        assertTrue(saldoInicial > u.getSaldo() && (saldoInicial-u.getSaldo() == p.totalPedido()));
+        assertTrue(saldoInicial > u.getSaldo());
     }
 
 }

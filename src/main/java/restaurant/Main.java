@@ -1,6 +1,7 @@
 package restaurant;
 
 import restaurant.exceptions.EmailFormatException;
+import restaurant.exceptions.RecetaVaciaException;
 import restaurant.exceptions.SinSaldoException;
 
 import java.util.ArrayList;
@@ -61,11 +62,15 @@ public class Main {
         Producto p1 = new ProductoBasico("Lata Coca Cola", 10, 20);
         Producto p2 = new ProductoBasico("Lata Sprite", 10, 22);
         Producto p3 = new ProductoElaborado("Retorti", 120);
-        ((ProductoElaborado) p3).setReceta(tortilla);
-        Producto p4 = new ProductoElaborado("BIG O", 150);
-        ((ProductoElaborado) p4).setReceta(hamburguesa);
-        Producto p5 = new ProductoElaborado("PATATAS", 120);
-        ((ProductoElaborado) p5).setReceta(papasFritas);
+        try {
+            ((ProductoElaborado) p3).setReceta(tortilla);
+            Producto p4 = new ProductoElaborado("BIG O", 150);
+            ((ProductoElaborado) p4).setReceta(hamburguesa);
+            Producto p5 = new ProductoElaborado("PATATAS", 120);
+            ((ProductoElaborado) p5).setReceta(papasFritas);
+        } catch (RecetaVaciaException e) {
+            throw new RuntimeException(e);
+        }
 
         Mostrador m1 = new Mostrador();
         m1.setNombreOperador("Jose");

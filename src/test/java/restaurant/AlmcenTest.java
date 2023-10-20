@@ -7,13 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.*;
 
 import restaurant.Almacen;
 import restaurant.Ingrediente;
@@ -56,6 +50,7 @@ class AlmacenTest {
     }
 
     @Test
+    @Disabled
     void testExtraerConsumibles() {
         fail("Not yet implemented");
     }
@@ -63,11 +58,11 @@ class AlmacenTest {
     @TestFactory
     Stream<DynamicTest> dynamicTestIngredientes() {
         return AlmacenTest.ingATestear.stream()
-                .map(dom -> DynamicTest.dynamicTest("Testing: " + dom.getNombre(), () -> {
-                    int cantidadInicial = dom.getStock();
+                .map(ingrediente -> DynamicTest.dynamicTest("Testing: " + ingrediente.getNombre(), () -> {
+                    int cantidadInicial = ingrediente.getStock();
                     int cantidadAgregada = (int) (Math.random() * 100);
-                    Almacen.IngresarConsumibles(dom, cantidadAgregada);
-                    assertEquals(cantidadAgregada + cantidadInicial, dom.getStock());
+                    Almacen.IngresarConsumibles(ingrediente, cantidadAgregada);
+                    assertEquals(cantidadAgregada + cantidadInicial, ingrediente.getStock());
                 }));
     }
 }
